@@ -1,0 +1,15 @@
+{
+  "name": "golf-turf-root",
+  "version": "1.0.0",
+  "description": "Root management for Golf Turf project",
+  "scripts": {
+    "install:client": "cd client && npm install",
+    "dev:client": "cd client && npm run dev",
+    "dev:server": "cd backend && venv\\Scripts\\python app.py",
+    "seed:server": "cd backend && venv\\Scripts\\python seed.py",
+    "dev": "npx concurrently \"npm run dev:client\" \"npm run dev:server\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
