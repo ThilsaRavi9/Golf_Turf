@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 import { HiOutlineMenuAlt3, HiX } from 'react-icons/hi';
 import { FiArrowUpRight } from 'react-icons/fi';
-import { useScrollPosition } from '../hooks';
 import { slideInNav } from '../animations/variants';
 
 const navLinks = [
@@ -14,10 +13,8 @@ const navLinks = [
 ];
 
 export default function Navbar() {
-  const { scrollY } = useScrollPosition();
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
-  const isScrolled = scrollY > 50;
 
   // Close mobile menu on route change
   useEffect(() => {
@@ -35,44 +32,32 @@ export default function Navbar() {
       variants={slideInNav}
       initial="hidden"
       animate="visible"
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        isScrolled
-          ? 'bg-white/95 dark:bg-dark-bg/95 backdrop-blur-xl shadow-lg py-3'
-          : 'bg-transparent py-5'
-      }`}
+      className="relative z-50 px-4 pt-0 sm:px-6 lg:px-10"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <nav className="flex items-center justify-between">
-          {/* Logo */}
+      <div className="mx-auto max-w-[1280px] rounded-t-[8px] bg-white px-0 py-3 sm:px-3">
+        <nav className="flex h-7 items-center justify-between">
           <Link to="/" className="flex items-center gap-2 group">
-            <span
-              className={`text-2xl font-extrabold tracking-tight font-[Poppins] transition-colors duration-300 ${
-                isScrolled ? 'text-gray-900 dark:text-white' : 'text-gray-900 dark:text-white'
-              }`}
-            >
+            <span className="font-[Poppins] text-[18px] font-extrabold tracking-tight text-black">
               SPRING
             </span>
           </Link>
 
-          {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden items-center gap-9 md:flex">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 to={link.path}
-                className={`relative text-sm font-medium transition-colors duration-300 hover:text-green-700 dark:hover:text-green-400 ${
+                className={`relative text-[8px] font-medium transition-colors duration-300 hover:text-black ${
                   location.pathname === link.path
-                    ? 'text-green-700 dark:text-green-400'
-                    : isScrolled
-                    ? 'text-gray-700 dark:text-gray-300'
-                    : 'text-gray-700 dark:text-gray-300'
+                    ? 'text-black'
+                    : 'text-gray-700'
                 }`}
               >
                 {link.name}
                 {location.pathname === link.path && (
                   <motion.div
                     layoutId="nav-indicator"
-                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-green-600 rounded-full"
+                    className="absolute -bottom-1 left-0 right-0 h-px rounded-full bg-black"
                     transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                   />
                 )}
@@ -80,25 +65,26 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* CTA + Mobile Toggle */}
           <div className="flex items-center gap-4">
             <Link
               to="/contact"
-              className="hidden md:flex items-center gap-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-green-800 dark:hover:bg-green-50 transition-all duration-300 btn-ripple group"
+              className="hidden h-8 items-center gap-2 rounded-full bg-[#171717] px-5 text-[8px] font-semibold text-white transition-all duration-300 hover:bg-black md:flex"
             >
               GET STARTED
-              <FiArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              <span className="flex h-4 w-4 items-center justify-center rounded-full bg-white text-black">
+                <FiArrowUpRight className="h-2.5 w-2.5" />
+              </span>
             </Link>
 
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="md:hidden p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-dark-surface transition-colors"
+              className="rounded-xl p-2 transition-colors hover:bg-gray-100 md:hidden"
               aria-label="Toggle menu"
             >
               {mobileOpen ? (
-                <HiX className="w-6 h-6 text-gray-800 dark:text-white" />
+                <HiX className="h-6 w-6 text-gray-800" />
               ) : (
-                <HiOutlineMenuAlt3 className="w-6 h-6 text-gray-800 dark:text-white" />
+                <HiOutlineMenuAlt3 className="h-6 w-6 text-gray-800" />
               )}
             </button>
           </div>
@@ -113,7 +99,7 @@ export default function Navbar() {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="md:hidden bg-white dark:bg-dark-bg border-t border-gray-100 dark:border-dark-surface overflow-hidden"
+            className="overflow-hidden border-t border-gray-100 bg-white md:hidden"
           >
             <div className="px-6 py-6 space-y-1">
               {navLinks.map((link, i) => (
@@ -128,7 +114,7 @@ export default function Navbar() {
                     className={`block py-3 px-4 rounded-xl text-base font-medium transition-all duration-200 ${
                       location.pathname === link.path
                         ? 'bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400'
-                        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-surface'
+                        : 'text-gray-700 hover:bg-gray-50'
                     }`}
                   >
                     {link.name}
@@ -143,7 +129,7 @@ export default function Navbar() {
               >
                 <Link
                   to="/contact"
-                  className="flex items-center justify-center gap-2 w-full bg-gray-900 dark:bg-white text-white dark:text-gray-900 py-3 rounded-full font-semibold btn-ripple"
+                  className="flex w-full items-center justify-center gap-2 rounded-full bg-gray-900 py-3 font-semibold text-white"
                 >
                   GET STARTED
                   <FiArrowUpRight className="w-4 h-4" />

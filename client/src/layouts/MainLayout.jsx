@@ -1,30 +1,18 @@
-import { useDarkMode } from '../hooks';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ScrollProgress from '../components/ScrollProgress';
 import ScrollToTop from '../components/ScrollToTop';
-import DarkModeToggle from '../components/DarkModeToggle';
 
 export default function MainLayout({ children }) {
-  const { isDark, toggle } = useDarkMode();
-
   return (
-    <div className="min-h-screen bg-white dark:bg-dark-bg transition-colors duration-300">
-      {/* Top Scroll Progress Bar */}
+    <div className="min-h-screen bg-white text-gray-950 transition-colors duration-300 dark:bg-white dark:text-gray-950">
       <ScrollProgress />
-
-      {/* Navigation Bar */}
-      <Navbar />
-
-      {/* Main Page Content */}
-      <div className="pt-4">{children}</div>
-
-      {/* Footer */}
-      <Footer />
-
-      {/* Floating Utilities */}
+      <div className="min-h-screen w-full bg-white">
+        <Navbar />
+        <div>{children}</div>
+        <Footer />
+      </div>
       <ScrollToTop />
-      <DarkModeToggle isDark={isDark} toggle={toggle} />
     </div>
   );
 }

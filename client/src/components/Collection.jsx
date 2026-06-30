@@ -1,39 +1,38 @@
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { fadeInUp, staggerContainer, staggerItem } from '../animations/variants';
 import { getServices } from '../services/api';
 
 const filters = ['All', 'Coaching', 'Golf Club', 'Golf Apparel'];
 
-// Fallback data when backend is unavailable
 const fallbackServices = [
   {
     id: 1,
     title: 'Golf Technology Boom',
-    description: 'Explore the latest in golf technology including launch monitors, GPS devices, and smart clubs.',
     image: 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=600&q=80',
     category: 'Membership',
+    filter: 'Golf Club',
   },
   {
     id: 2,
     title: 'Scottie Scheffler Claims World',
-    description: 'Follow the rise of top golfers and their journey to becoming world champions.',
     image: 'https://images.unsplash.com/photo-1593111774240-d529f12cf4bb?w=600&q=80',
     category: 'Training',
+    filter: 'Coaching',
   },
   {
     id: 3,
     title: 'Gear Up for Paris Showdown',
-    description: 'Premium golf equipment and apparel to prepare for international tournaments.',
     image: 'https://images.unsplash.com/photo-1600791280003-a4bfcb444ca3?w=600&q=80',
     category: 'Coaching',
+    filter: 'Golf Club',
   },
   {
     id: 4,
     title: 'Golf Tournament Announced',
-    description: 'Major golf tournaments announced for the upcoming season.',
     image: 'https://images.unsplash.com/photo-1632932197818-3891c4102e7b?w=600&q=80',
     category: 'Tournaments',
+    filter: 'Golf Apparel',
   },
 ];
 
@@ -44,60 +43,54 @@ export default function Collection() {
   useEffect(() => {
     getServices()
       .then(data => {
-        if (data && data.length > 0) setServices(data);
+        if (data && data.length > 0) setServices(data.slice(0, 4));
       })
       .catch(() => {});
   }, []);
 
-  const filtered = active === 'All' ? services : services.filter(s => s.category === active);
+  const cards = fallbackServices.map((fallback, index) => ({
+    ...fallback,
+    ...(services[index] || {}),
+    filter: fallback.filter,
+  }));
+  const filtered = active === 'All' ? cards : cards.filter(card => card.filter === active);
 
   return (
-    <section id="collection" className="py-20 md:py-28 px-4 sm:px-6 lg:px-8 bg-gray-50/50 dark:bg-dark-card">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
+    <section id="collection" className="px-4 pb-12 sm:px-6 lg:px-10">
+      <div className="mx-auto max-w-[1280px]">
         <motion.div
           variants={fadeInUp}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-80px' }}
-          className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12"
+          className="mb-5 flex flex-col gap-4 md:flex-row md:items-end md:justify-between"
         >
           <div>
-            <span className="text-sm font-semibold text-green-600 dark:text-green-400 uppercase tracking-wider">
-              Sport Collection
-            </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white font-[Poppins] mt-2 leading-tight">
-              Experience the Golf Trip<br />
-              of <span className="text-gradient">Your Dreams</span> With Us
+            <span className="text-[10px] font-normal text-black">Sport Collection</span>
+            <h2 className="mt-1 font-[Poppins] text-[28px] font-normal leading-[0.98] text-black">
+              <span className="font-bold">Experience the Golf Trip of<br />
+              </span>Your Dreams With Us
             </h2>
           </div>
 
-          {/* Filter Chips */}
-          <div className="flex flex-wrap gap-2">
-            {filters.map((f) => (
+          <div className="flex flex-wrap gap-1.5 pb-1">
+            {filters.map(filter => (
               <button
-                key={f}
-                onClick={() => setActive(f)}
-                className={`px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-300 ${
-                  active === f
-                    ? 'bg-green-800 text-white shadow-md'
-                    : 'bg-white dark:bg-dark-surface text-gray-600 dark:text-gray-400 hover:bg-green-50 dark:hover:bg-green-900/20 border border-gray-200 dark:border-gray-700'
+                key={filter}
+                onClick={() => setActive(filter)}
+                className={`rounded-full px-3 py-1 text-[7px] font-bold uppercase transition-all duration-300 ${
+                  active === filter ? 'bg-[#caff24] text-black' : 'bg-white text-black'
                 }`}
               >
-                {f}
+                {filter}
               </button>
             ))}
           </div>
         </motion.div>
 
-        {/* Card Grid — key={active} forces re-mount so stagger replays on every filter change */}
         {filtered.length === 0 ? (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-center py-24 text-gray-400 dark:text-gray-500"
-          >
-            <p className="text-lg font-medium">No items found in this category.</p>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="py-12 text-center text-gray-400">
+            <p className="text-sm font-medium">No items found in this category.</p>
           </motion.div>
         ) : (
           <motion.div
@@ -105,34 +98,31 @@ export default function Collection() {
             variants={staggerContainer}
             initial="hidden"
             animate="visible"
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5"
+            className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4"
           >
-            {filtered.map((item) => (
+            {filtered.map(item => (
               <motion.div
                 key={item.id}
                 variants={staggerItem}
-                className="relative rounded-2xl overflow-hidden aspect-[3/4] cursor-pointer group card-lift img-zoom"
+                className="group relative aspect-[1.02/1] cursor-pointer overflow-hidden rounded-[7px] img-zoom"
               >
                 <img
                   src={item.image}
                   alt={item.title}
-                  className="w-full h-full object-cover"
+                  className="h-full w-full object-cover"
                   loading="lazy"
-                  onError={(e) => {
-                    e.target.src = 'https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?w=600&q=80';
+                  onError={event => {
+                    event.currentTarget.src = 'https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?w=600&q=80';
                   }}
                 />
-                {/* Dark Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent group-hover:from-black/80 transition-all duration-300" />
-                {/* Category Tag */}
-                <div className="absolute top-4 left-4">
-                  <span className="bg-green-600/90 text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent transition-all duration-300 group-hover:from-black/80" />
+                <div className="absolute left-2 top-2">
+                  <span className="rounded-full bg-white/25 px-2 py-1 text-[6px] font-bold uppercase tracking-wider text-white">
                     {item.category}
                   </span>
                 </div>
-                {/* Title */}
-                <div className="absolute bottom-0 left-0 right-0 p-5">
-                  <h3 className="text-white text-lg font-bold leading-snug">{item.title}</h3>
+                <div className="absolute bottom-0 left-0 right-0 p-3">
+                  <h3 className="max-w-[110px] text-[12px] font-medium leading-[1.05] text-white">{item.title}</h3>
                 </div>
               </motion.div>
             ))}

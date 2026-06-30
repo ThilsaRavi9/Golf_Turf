@@ -1,138 +1,80 @@
-import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { gsap } from 'gsap';
-import { FiArrowUpRight } from 'react-icons/fi';
-import { fadeInUp, fadeInLeft, fadeInRight, scaleIn } from '../animations/variants';
+import { fadeInUp, fadeInLeft, fadeInRight } from '../animations/variants';
 
 export default function Hero() {
-  const heroRef = useRef(null);
-  const ballRef = useRef(null);
-  const bgRef = useRef(null);
-
-  // GSAP parallax + floating ball
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Parallax background
-      gsap.to(bgRef.current, {
-        yPercent: -15,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: heroRef.current,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: true,
-        },
-      });
-
-      // Floating golf ball animation
-      gsap.to(ballRef.current, {
-        y: -20,
-        rotation: 5,
-        duration: 3,
-        repeat: -1,
-        yoyo: true,
-        ease: 'sine.inOut',
-      });
-    }, heroRef);
-
-    return () => ctx.revert();
-  }, []);
-
   return (
-    <section ref={heroRef} className="relative pt-24 pb-8 px-4 sm:px-6 lg:px-8 overflow-hidden">
-      <div className="max-w-7xl mx-auto">
-        {/* Main Hero Card */}
+    <section className="px-4 pb-16 sm:px-6 lg:px-10">
+      <div className="mx-auto max-w-[1280px]">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="relative rounded-3xl overflow-hidden min-h-[500px] md:min-h-[560px] lg:min-h-[600px]"
+          className="relative min-h-[420px] overflow-hidden rounded-b-[10px] rounded-t-[6px] sm:min-h-[470px] lg:min-h-[520px]"
         >
-          {/* Background Image */}
           <div
-            ref={bgRef}
-            className="absolute inset-0 scale-[1.30]"
+            className="absolute inset-0"
             style={{
-              backgroundImage: `url('https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?w=1400&q=80')`,
+              backgroundImage: `url('https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=1400&q=90')`,
               backgroundSize: 'cover',
-              backgroundPosition: 'center',
+              backgroundPosition: 'center 48%',
               backgroundRepeat: 'no-repeat',
             }}
           />
-          {/* Optional subtle overlay removed to keep the grass image natural */}
-          <div className="absolute inset-0 bg-black/15" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/25 via-black/5 to-black/25" />
 
-          <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between h-full min-h-[500px] md:min-h-[560px] lg:min-h-[600px] p-8 md:p-12 lg:p-16">
-            {/* Left Content */}
-            <div className="flex-1 max-w-lg">
+          <div className="relative z-10 min-h-[420px] p-6 sm:min-h-[470px] sm:p-8 lg:min-h-[520px]">
+            <div className="flex items-start justify-between gap-8">
               <motion.h1
                 variants={fadeInUp}
                 initial="hidden"
                 animate="visible"
-                className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight font-[Poppins] mb-6"
+                className="max-w-[330px] font-[Poppins] text-[36px] font-medium leading-[1.05] text-white sm:text-[44px] lg:text-[52px]"
               >
-                Tee off in{' '}
-                <span className="text-green-300">Perfect</span>
+                Tee off in Perfect
               </motion.h1>
 
               <motion.div
-                variants={fadeInUp}
+                variants={fadeInRight}
                 initial="hidden"
                 animate="visible"
                 transition={{ delay: 0.3 }}
-                className="flex flex-wrap gap-3 mt-8"
+                className="hidden max-w-[255px] pt-5 text-right md:block"
               >
-                <button className="flex items-center gap-2 px-6 py-3 bg-white text-gray-900 rounded-full text-sm font-semibold hover:bg-gray-100 transition-all duration-300 btn-ripple">
-                  LEARN MORE
-                </button>
-                <button className="flex items-center gap-2 px-6 py-3 border-2 border-white text-white rounded-full text-sm font-semibold hover:bg-white/10 transition-all duration-300 btn-ripple">
-                  BOOK A TIME
-                </button>
+                <div className="mb-3 ml-auto h-px w-20 bg-white/80" />
+                <p className="text-[12px] font-medium leading-[1.2] text-white">
+                  Golf requires skill, strategy, and mental focus, and is enjoyed both competitively and recreationally.
+                </p>
+                <div className="mt-4 flex justify-end gap-2">
+                  <button className="rounded-full bg-white px-5 py-2 text-[9px] font-bold text-black">
+                    LEARN MORE
+                  </button>
+                  <button className="rounded-full bg-[#d5ff34] px-5 py-2 text-[9px] font-bold text-black">
+                    BOOK A TIME
+                  </button>
+                </div>
               </motion.div>
             </div>
 
-            {/* Center Golf Ball */}
-            <div className="flex-shrink-0 my-8 lg:my-0">
-              <motion.div
-                ref={ballRef}
-                variants={scaleIn}
-                initial="hidden"
-                animate="visible"
-                transition={{ delay: 0.4 }}
-              >
-                <img
-                  src="https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=400&q=80"
-                  alt="Golf ball on tee at sunset"
-                  className="w-48 h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 rounded-full object-cover shadow-2xl border-4 border-white/30"
-                  loading="eager"
-                />
-              </motion.div>
-            </div>
-
-            {/* Right Description */}
-            <motion.div
-              variants={fadeInRight}
+            <motion.h2
+              variants={fadeInUp}
               initial="hidden"
               animate="visible"
               transition={{ delay: 0.5 }}
-              className="flex-1 max-w-xs text-right hidden lg:block"
+              className="absolute bottom-7 left-6 font-[Poppins] text-[54px] font-light leading-none tracking-normal text-white sm:left-[190px] sm:text-[78px] lg:left-[240px] lg:text-[104px]"
             >
-              <p className="text-white/90 text-sm leading-relaxed">
-                Golf requires skill, strategy, and mental focus, and is enjoyed both competitively and recreationally.
-              </p>
-            </motion.div>
+              Surroundings
+            </motion.h2>
           </div>
 
-          {/* Floating Promo Card */}
           <motion.div
             variants={fadeInLeft}
             initial="hidden"
             animate="visible"
             transition={{ delay: 0.7 }}
-            className="absolute bottom-8 left-8 md:bottom-12 md:left-12 glass rounded-2xl p-4 max-w-[220px] hidden md:block"
+            className="glass absolute bottom-10 left-8 hidden max-w-[178px] rounded-[8px] p-2 md:block"
           >
-            <div className="flex gap-3">
-              <div className="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0">
+            <div>
+              <div className="h-[74px] overflow-hidden rounded-[4px]">
                 <img
                   src="https://images.unsplash.com/photo-1592919505780-303950717480?w=200&q=80"
                   alt="Golf course aerial view"
@@ -140,9 +82,9 @@ export default function Hero() {
                   loading="lazy"
                 />
               </div>
-              <div>
-                <h4 className="text-white text-xs font-bold leading-tight">Offer A Great Golf</h4>
-                <p className="text-white/70 text-[10px] mt-1 leading-relaxed">
+              <div className="pt-2">
+                <h4 className="text-[11px] font-bold leading-tight text-white">Offer A Great Golf</h4>
+                <p className="mt-1 text-[7px] leading-tight text-white/80">
                   Played on expansive outdoor courses, the game emphasizes skill, strategy, and accuracy.
                 </p>
               </div>

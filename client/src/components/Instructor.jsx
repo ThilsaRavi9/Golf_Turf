@@ -2,85 +2,83 @@ import { motion } from 'framer-motion';
 import { FiArrowUpRight } from 'react-icons/fi';
 import { fadeInLeft, fadeInRight, fadeInUp } from '../animations/variants';
 
-const categories = ['MEMBERSHIP', 'TRAINING', 'COACHING', 'TOURNAMENTS'];
+const categories = ['Membership', 'Training', 'Coaching', 'Tournaments'];
 
 export default function Instructor() {
   return (
-    <section id="instructor" className="py-20 md:py-28 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Top Description */}
+    <section id="instructor" className="px-4 pb-12 sm:px-6 lg:px-10">
+      <div className="mx-auto max-w-[1280px]">
         <motion.div
           variants={fadeInUp}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-80px' }}
-          className="text-center max-w-3xl mx-auto mb-16"
+          className="mx-auto mb-12 max-w-[620px] text-center"
         >
-          <p className="text-gray-600 dark:text-gray-400 text-base md:text-lg leading-relaxed">
-            <span className="font-semibold text-gray-900 dark:text-white">Professional maintenance and operation</span>{' '}
-            of golf courses, ensuring optimal playing conditions, landscaping, professionals and
+          <p className="text-[16px] leading-[1.25] text-black">
+            <span className="font-bold">Professional maintenance and operation</span> of golf courses, ensuring<br className="hidden md:block" />
+            optimal playing conditions, landscaping, professionals and<br className="hidden md:block" />
             sustainability practices.
           </p>
         </motion.div>
 
-        {/* Split Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-          {/* Left Card */}
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-8">
           <motion.div
             variants={fadeInLeft}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: '-60px' }}
-            className="bg-white dark:bg-dark-card rounded-3xl p-8 md:p-10 shadow-card relative overflow-hidden"
+            className="flex min-h-[220px] flex-col justify-between rounded-[8px] bg-[#f3f8fb] p-6"
           >
-            {/* Badge */}
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 rounded-full bg-green-600 flex items-center justify-center">
-                <span className="text-white text-xs font-bold">35k</span>
-              </div>
-              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-            </div>
-
-            <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white font-[Poppins] leading-tight mb-4">
-              We Have <span className="text-gradient">The Best Instructors</span> To Teach You Golfing mates.
-            </h3>
-
-            <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-8">
-              Golf requires skill, strategy, and mental focus, and is enjoyed both competitively and recreationally.
-            </p>
-
-            <button className="inline-flex items-center gap-2 px-6 py-3 border-2 border-gray-900 dark:border-white text-gray-900 dark:text-white rounded-full text-sm font-semibold hover:bg-gray-900 hover:text-white dark:hover:bg-white dark:hover:text-gray-900 transition-all duration-300 btn-ripple group">
-              EXPLORE MORE
-              <FiArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-            </button>
-
-            {/* Category Pills */}
-            <div className="flex flex-wrap gap-2 mt-8 pt-6 border-t border-gray-100 dark:border-gray-700">
-              {categories.map((cat) => (
-                <span
-                  key={cat}
-                  className="px-4 py-1.5 bg-gray-50 dark:bg-dark-surface text-gray-600 dark:text-gray-400 rounded-full text-[10px] font-bold uppercase tracking-wider"
-                >
-                  {cat}
+            <div>
+              <div className="mb-9 flex w-fit items-center gap-1.5 rounded-full bg-lime-200 px-2 py-1">
+                <span className="flex -space-x-1">
+                  {[0, 1, 2, 3].map(item => (
+                    <span key={item} className="h-4 w-4 rounded-full border border-white bg-green-700" />
+                  ))}
                 </span>
-              ))}
+                <span className="text-[7px] font-bold text-black">30k</span>
+              </div>
+
+              <h3 className="max-w-[280px] font-[Poppins] text-[24px] font-normal leading-[1.02] text-black">
+                We Have <span className="font-bold">The Best<br />
+                Instructors</span> To Teach You<br />
+                Golfing mates.
+              </h3>
+
+              <p className="mt-4 max-w-[265px] text-[8px] leading-[1.4] text-gray-700">
+                Golf requires skill, strategy, and mental focus, and is enjoyed both competitively and recreationally.
+              </p>
             </div>
+
+            <button className="mt-5 flex w-fit items-center gap-1.5 rounded-full bg-[#151515] px-3 py-2 text-[7px] font-bold uppercase text-white">
+              Explore More
+              <span className="flex h-4 w-4 items-center justify-center rounded-full bg-white text-black">
+                <FiArrowUpRight className="h-2.5 w-2.5" />
+              </span>
+            </button>
           </motion.div>
 
-          {/* Right Image */}
           <motion.div
             variants={fadeInRight}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: '-60px' }}
-            className="rounded-3xl overflow-hidden img-zoom aspect-[4/3] lg:aspect-auto lg:h-full"
+            className="relative min-h-[220px] overflow-hidden rounded-[8px] img-zoom"
           >
             <img
-              src="https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?w=800&q=80"
-              alt="Aerial view of a beautiful golf course with green fairways"
-              className="w-full h-full object-cover min-h-[400px]"
+              src="https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?w=900&q=90"
+              alt="Aerial view of a golf course"
+              className="h-full min-h-[220px] w-full object-cover"
               loading="lazy"
             />
+            <div className="absolute inset-x-0 bottom-0 flex flex-wrap gap-2 p-4">
+              {categories.map(category => (
+                <span key={category} className="rounded-full bg-white/40 px-3 py-1 text-[6px] font-bold uppercase text-white">
+                  {category}
+                </span>
+              ))}
+            </div>
           </motion.div>
         </div>
       </div>
